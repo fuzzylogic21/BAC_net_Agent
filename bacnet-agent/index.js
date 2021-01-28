@@ -8,8 +8,8 @@ const logger = require('./logger');
 
 // data update duration in seconds to losant
 const UPDATE_DURATION = 300;
-const GATEWAY_IP_ADDRESS = 'http://localhost:8084/';
-const GATEWAY_IP_ADDRESS_2 = 'http://localhost:8085/';
+const GATEWAY_IP_ADDRESS = 'http://192.168.1.80:8084/';
+const GATEWAY_IP_ADDRESS_2 = 'http://192.189.1.80:8085/';
 
 // Second IP address data delay duration in seconds to losant
 const GATEWAY_DELAY = 10;
