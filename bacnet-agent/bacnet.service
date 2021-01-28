@@ -1,0 +1,13 @@
+[Unit]
+Description=Bacnet Reader Service
+
+[Service]
+ExecStart=/bin/bash -c 'node index.js'
+WorkingDirectory=/home/ec2-user/bacnet-node/
+KillMode=control-group
+TimeoutStopSec=2
+User=ec2-user
+EnvironmentFile=/etc/environment
+[Install]
+WantedBy=multi-user.target
+
