@@ -34,8 +34,6 @@ class Device {
                 { objectId: { type: bacnet.enum.ObjectType.DEVICE, instance: dobj.objectIdentifier}, properties: DeviceProperties.objs}
             ];
             BacnetClient.client.readPropertyMultiple(this.receiver, requestArray, (err, value) => {
-                // console.log(JSON.stringify(err));
-		        // console.log(JSON.stringify(value));
                 resolve(value);
             });
         })
@@ -49,33 +47,14 @@ class Device {
             this.prpReader.readValue(obj, propertyInfo);
         }
     }
-    // async readFile(fileObj) {
-    //     let that = this;
-    //     let p = new Promise((resolve, reject) => {
-    //         //console.log(dobj.objectIdentifier, JSON.stringify(requestArray));
-    //         console.log(that.receiver, fileObj.objectIdentifier, 0, fileObj.fileSize);
-    //         BacnetClient.client.readFile(that.receiver, fileObj.objectIdentifier, 0, 1482, (err, value) => {
-    //             console.log(JSON.stringify(err));
-	// 	        console.log(JSON.stringify(value));
-    //             resolve(value);
-    //         });
-    //     })
-    //     return p;
-    // }
+   
     readExportedData(prop, deviceTracker, data) {
         let obj = {};
         this.readProps(obj, prop);
-        if (obj.objectName.indexOf('PM_2.5') > -1) {
-            obj.objectName = obj.objectName.replace('PM_2.5', 'PM_2-5');
-        }
-        // console.log(JSON.stringify(obj));
-        // {"objectIdentifier":111,"objectName":"Drivers.BacnetNetwork.Site_1.CPM.CT.CONW_Header_Ret_Temp","objectType":"analog_input","presentValue":0}j
+        
         let pathPPropInd = obj.objectName.lastIndexOf('.');
         let path = obj.objectName.substring(0, pathPPropInd);
-        let p = obj.objectName.substring(pathPPropInd + 1, obj.objectName.length);
-        if (p == 'PM_2-5') {
-            p = 'PM_2.5';
-        }
+        
         if (deviceTracker[path] !== undefined) {
             let deviceInd = deviceTracker[path];
             data[deviceInd][p] = obj.presentValue;
@@ -105,19 +84,17 @@ class Device {
                         type: obj,
                         instance: objectId++
                     };
-                    // console.log(k);
+                    console.log(k);
                     let devObj = await this.getDeviceObjectProps(k);
-                    //console.log(JSON.stringify(devObj));
+                    console.log(JSON.stringify(devObj));
                     this.readExportedData(devObj, deviceTracker, data);
-                    //
+                    
                 }
             } catch (err) {
                 // End of Object list.
             }
         }
         this.deviceData.objects = data;
-        // console.log('--------------------------');
-        // console.log(JSON.stringify(this.deviceData));
     }
     async readDeviceInformation(udpMsg) {
         this.deviceData = new DeviceData();
@@ -133,9 +110,6 @@ class Device {
         this.deviceData.objectIdentifier = udpMsg.payload.deviceId;
         let prps = await this.getDeviceProps(this.deviceData);
         this.readProps(this.deviceData, prps);
-        // this.discoverDataFromDevice();
-        // delete dobj.objectList;
-        // console.log("Device -- ", this.deviceData.objectIdentifier, JSON.stringify(this.deviceData));
     }
 }
 
