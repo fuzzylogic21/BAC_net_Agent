@@ -9,7 +9,6 @@ const logger = require('./logger');
 // data update duration in seconds to losant
 const UPDATE_DURATION = 300;
 const GATEWAY_IP_ADDRESS = 'http://192.168.1.80:8084/';
-const GATEWAY_IP_ADDRESS_2 = 'http://192.189.1.80:8085/';
 
 // Second IP address data delay duration in seconds to losant
 const GATEWAY_DELAY = 10;
@@ -34,16 +33,7 @@ class BacnetManager {
             logger.info('Error while sending data to server - ' + GATEWAY_IP_ADDRESS);
             logger.error(e);
         }
-        setTimeout(async () => {
-            try {
-                logger.info('Sending data of device id: ' + data.objectIdentifier);
-                let response = await axios.post(GATEWAY_IP_ADDRESS_2, data);
-                logger.info('Response of ' + GATEWAY_IP_ADDRESS_2 + ': ' + JSON.stringify(response.data));
-            } catch (e) {
-                logger.info('Error while sending data to server - ' + GATEWAY_IP_ADDRESS_2);
-                logger.error(e);
-            }
-        }, GATEWAY_DELAY * 1000);
+        
     }
     async monitor() {
         for (let i = 0, length = this.devices.length; i < length; i++) {
@@ -67,9 +57,7 @@ class BacnetManager {
             await device.readDeviceInformation(msg);
             that.devices.push(device);
         });
-	    // this.monitor();
-        // // register monitor schedule
-        // setInterval(this.monitor.bind(this), UPDATE_DURATION * 1000);
+	    
     }
 }
 
