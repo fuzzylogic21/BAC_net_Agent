@@ -1,7 +1,7 @@
 let bacnet = require('node-bacnet');
 
 class BacnetClient {
-    static receiver = '192.168.1.90';
+    static receiver = '192.168.1.9';
     static client = undefined;
     static initialize() {
         if (BacnetClient.client == undefined) {
