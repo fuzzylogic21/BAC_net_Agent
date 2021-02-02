@@ -17,7 +17,6 @@ const DevicePropertiesArr = [
     pi.PROTOCOL_OBJECT_TYPES_SUPPORTED,
     pi.OBJECT_LIST,
     pi.MAX_APDU_LENGTH_ACCEPTED,
-    // pi.NODE_TYPE
 ];
 const DeviceProperties = [
     { id: pi.OBJECT_IDENTIFIER },
